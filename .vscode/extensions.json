@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "christian-kohler.npm-intellisense",
+    "dbaeumer.vscode-eslint",
+    "rvest.vs-code-prettier-eslint",
+    "oouo-diogo-perdigao.docthis"
+  ]
+}
