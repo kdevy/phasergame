@@ -9,12 +9,15 @@ export default class Player {
     public sprite: Phaser.Physics.Arcade.Sprite;
     private scene: Phaser.Scene;
     private keys: Keys;
-    private lastDirection: string;
+    private lastDirection: string = "";
+    private keepKeyDown: string = "";
+    private moveSpeed = 100;
 
     constructor(x: number, y: number, scene: Phaser.Scene) {
         this.scene = scene;
         this.sprite = scene.physics.add.sprite(x, y, "player", 0);
         this.sprite.setSize(32, 32);
+
         this.sprite.anims.create({
             key: "playerIdle",
             frames: this.sprite.anims.generateFrameNumbers("player", { start: 7, end: 7 }),
@@ -42,25 +45,25 @@ export default class Player {
         this.sprite.anims.create({
             key: "playerWalk",
             frames: this.sprite.anims.generateFrameNumbers("player", { start: 6, end: 8 }),
-            frameRate: 5,
+            frameRate: 8,
             repeat: -1,
         });
         this.sprite.anims.create({
             key: "playerWalkBack",
             frames: this.sprite.anims.generateFrameNumbers("player", { start: 9, end: 11 }),
-            frameRate: 5,
+            frameRate: 8,
             repeat: -1,
         });
         this.sprite.anims.create({
             key: "playerWalkLeft",
             frames: this.sprite.anims.generateFrameNumbers("player", { start: 12, end: 14 }),
-            frameRate: 5,
+            frameRate: 8,
             repeat: -1,
         });
         this.sprite.anims.create({
             key: "playerWalkRight",
             frames: this.sprite.anims.generateFrameNumbers("player", { start: 15, end: 17 }),
-            frameRate: 5,
+            frameRate: 8,
             repeat: -1,
         });
         this.sprite.anims.play("playerIdle");
@@ -75,44 +78,50 @@ export default class Player {
 
     update() {
         let animationKey = "";
-        const velocity = { x: 0, y: 0 };
-
-        console.log("this.keys.top.isDown:", this.keys.top.isDown);
-        console.log("this.keys.down.isDown:", this.keys.down.isDown);
-
-        console.log("this.keys.left.isDown:", this.keys.left.isDown);
-        console.log("this.keys.right.isDown:", this.keys.right.isDown);
+        let startKeyDown = false;
 
         if (this.keys.top.isDown) {
             animationKey = "playerWalkBack";
             this.lastDirection = "top";
-            velocity.y = -100;
+            this.sprite.setVelocityY(-this.moveSpeed);
         } else if (this.keys.down.isDown) {
             animationKey = "playerWalk";
             this.lastDirection = "down";
-            velocity.y = 100;
+            this.sprite.setVelocityY(this.moveSpeed);
         } else {
-            velocity.y = 0;
+            this.sprite.setVelocityY(0);
         }
 
         if (this.keys.left.isDown) {
             animationKey = "playerWalkLeft";
             this.lastDirection = "left";
-            velocity.x = -100;
+            this.sprite.setVelocityX(-this.moveSpeed);
         } else if (this.keys.right.isDown) {
             animationKey = "playerWalkRight";
             this.lastDirection = "right";
-            velocity.x = 100;
+            this.sprite.setVelocityX(this.moveSpeed);
         } else {
-            velocity.x = 0;
+            this.sprite.setVelocityX(0);
         }
 
-        if (velocity.x == 0 && velocity.y == 0) {
-            this.sprite.setVelocity(velocity.x, velocity.y);
+        /**
+         * keepKeyDown=空の状態かつキーのisDownを検知した時が、押し始めということ。
+         */
+        let moveKeyDown =
+            this.keys.top.isDown || this.keys.down.isDown || this.keys.left.isDown || this.keys.right.isDown;
+        if (moveKeyDown) {
+            if (!this.keepKeyDown || this.keepKeyDown != this.lastDirection) {
+                startKeyDown = true;
+            }
+            this.keepKeyDown = this.lastDirection;
+        } else {
+            this.keepKeyDown = "";
         }
+        console.log("startKeyDown", startKeyDown);
+        console.log("keepKeyDown", this.keepKeyDown);
+        console.log("lastDirection", this.lastDirection);
 
-        if (this.sprite.body.velocity.length() > 0) {
-            this.sprite.setVelocity(velocity.x, velocity.y);
+        if (!startKeyDown && this.sprite.body.velocity.length() > 0) {
             return;
         }
 
@@ -129,12 +138,10 @@ export default class Player {
             this.lastDirection = "";
         }
 
-        // console.log("animationKey", animationKey);
-        // console.log("lastDirection", this.lastDirection);
-        console.log("velocity", velocity);
+        console.log("animationKey", animationKey);
+
         if (animationKey) {
             this.sprite.anims.play(animationKey);
         }
-        this.sprite.setVelocity(velocity.x, velocity.y);
     }
 }

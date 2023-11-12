@@ -18,6 +18,9 @@ export class GameScene extends Phaser.Scene {
 
     create(): void {
         this.player = new Player(this.sys.game.canvas.width / 2, this.sys.game.canvas.height / 2, this);
+        this.cameras.main.zoom = 3;
+        this.cameras.main.setRoundPixels(true);
+        this.cameras.main.startFollow(this.player.sprite);
     }
 
     update(): void {

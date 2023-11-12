@@ -5,8 +5,8 @@ import { GameScene } from "./scenes/GameScene";
 window.addEventListener("load", () => {
     new Phaser.Game({
         type: Phaser.WEBGL,
-        width: window.innerWidth,
-        height: window.innerHeight,
+        width: 480,
+        height: 560,
         parent: "game",
         render: { pixelArt: true },
         physics: {
@@ -17,5 +17,6 @@ window.addEventListener("load", () => {
         scale: {
             mode: Phaser.Scale.RESIZE,
         },
+        backgroundColor: "#ccc",
     });
 });
