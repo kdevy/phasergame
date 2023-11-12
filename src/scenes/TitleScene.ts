@@ -1,5 +1,3 @@
-import WebFontFile from "../files/WebFontFile";
-
 export class TitleScene extends Phaser.Scene {
     gameStartText: Phaser.GameObjects.Text;
 
@@ -11,7 +9,6 @@ export class TitleScene extends Phaser.Scene {
 
     preload(): void {
         console.log("title scene");
-        this.load.addFile(new WebFontFile(this.load, "DotGothic16"));
     }
 
     create(): void {
