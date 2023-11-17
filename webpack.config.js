@@ -8,10 +8,10 @@ module.exports = {
         path: path.resolve(__dirname, "dist"),
         filename: "bundle.js",
     },
-    watch: true,
     watchOptions: {
-        aggregateTimeout: 200,
-        poll: 1000,
+        aggregateTimeout: 900,
+        poll: 900,
+        ignored: ["**/node_modules", "**/.git", "**/.vscode", "**/dist"],
     },
     module: {
         rules: [
@@ -28,8 +28,13 @@ module.exports = {
     devServer: {
         static: {
             directory: path.resolve(__dirname, "./"),
-            watch: {
+            watch: false,
+        },
+        watchFiles: {
+            paths: ["src/**/*"],
+            options: {
                 usePolling: true,
+                interval: 1000,
             },
         },
         devMiddleware: {
