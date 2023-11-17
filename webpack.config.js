@@ -8,6 +8,11 @@ module.exports = {
         path: path.resolve(__dirname, "dist"),
         filename: "bundle.js",
     },
+    watch: true,
+    watchOptions: {
+        aggregateTimeout: 200,
+        poll: 1000,
+    },
     module: {
         rules: [
             { test: /\.ts$/, loader: "ts-loader", exclude: "/node_modules/" },
@@ -23,11 +28,15 @@ module.exports = {
     devServer: {
         static: {
             directory: path.resolve(__dirname, "./"),
+            watch: {
+                usePolling: true,
+            },
         },
         devMiddleware: {
             publicPath: "/dist/",
         },
-        host: "127.0.0.1",
+
+        host: "0.0.0.0",
         port: 9000,
         open: true,
     },

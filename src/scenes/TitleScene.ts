@@ -13,7 +13,9 @@ export class TitleScene extends Phaser.Scene {
 
     create(): void {
         this.gameStartText = this.add
-            .text(this.sys.game.canvas.width / 2, 300, "ゲーム開始", { fontFamily: "aDotGothic16", fontSize: 20 })
+            .text(this.sys.game.canvas.width / 2, 300, "ゲーム開始", {
+                fontSize: 20,
+            })
             .setOrigin(0.5);
 
         this.gameStartText.setInteractive().on("pointerover", () => {

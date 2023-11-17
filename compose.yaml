@@ -1,0 +1,19 @@
+volumes:
+  node-modules:
+services:
+  app:
+    container_name: phasergame
+    build:
+      context: ./
+    environment:
+      NODE_ENV: development
+    networks:
+      - internal
+    ports:
+      - 9000:9000
+    volumes:
+      - ./:/app
+      - node-modules:/app/node_modules
+    tty: true
+networks:
+  internal:

@@ -12,3 +12,9 @@ npm 9.8.0
 ```
 npm run dev
 ```
+
+## Rebuid
+```docker-compose build --no-cache```
+
+## Run & Create Containers
+```docker compose up -d```
